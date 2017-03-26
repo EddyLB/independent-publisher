@@ -23,7 +23,6 @@ WordPress.com took the original Independent Publisher theme from WordPress.org a
     * [How do I get the small logo to show up in the top-left corner?](https://github.com/raamdev/independent-publisher#how-do-i-get-the-small-logo-to-show-up-in-the-top-left-corner)
     * [Why is my Author Bio and picture at the top of my home page (or below a blog post) and not on the side?](https://github.com/raamdev/independent-publisher#why-is-my-author-bio-and-picture-at-the-top-of-my-home-page-or-below-a-blog-post-and-not-on-the-side)
     * [How do I add Social Media Buttons below the Logo?](https://github.com/raamdev/independent-publisher#how-do-i-add-social-media-buttons-below-the-logo)
-    * [How do I make the JetPack Sharing Buttons look better?](https://github.com/raamdev/independent-publisher#how-do-i-make-the-jetpack-sharing-buttons-look-better)
     * [How do I make the Subscribe to Comments Reloaded Advanced Options look better?](https://github.com/raamdev/independent-publisher#how-do-i-make-the-subscribe-to-comments-reloaded-advanced-options-look-better)
     * [How do I make MailChimp Signup Forms look better?](https://github.com/raamdev/independent-publisher#how-do-i-make-mailchimp-signup-forms-look-better)
     * [How do I add an Archive Page?](https://github.com/raamdev/independent-publisher#how-do-i-add-an-archive-page)
@@ -158,13 +157,6 @@ After you're done, below in **Theme Locations** (located in the **Menu Settings*
 
 ![screen shot 2014-02-18 at 11 42 31 am](https://f.cloud.github.com/assets/5318719/2192202/dcd5a848-9861-11e3-8e96-85cc4cdee1cb.png)
 
-
-### How do I make the JetPack Sharing Buttons look better?
-
-If you clear the JetPack Sharing Buttons "Sharing label" field so that it's empty, Independent Publisher will force the sharing buttons to float right and will remove the right padding so that the buttons look nicer.
-
-![4dc42092-83b9-11e3-96a3-8b9580f82f80](https://f.cloud.github.com/assets/53005/2000387/8c1796bc-8558-11e3-8ee4-0c4f9f4fbf2e.png)
-
 ### How do I make the Subscribe to Comments Reloaded Advanced Options look better?
 
 Go to *Settings -> Subscribe to Comments -> Comment Form -> Custom HTML* and wrap the contents in a paragraph tag with the `comment-form-subscriptions` class. For example:
@@ -177,7 +169,7 @@ Note that double-quotes are not allowed in that field and that you *must* use si
 
 ### How do I make MailChimp Signup Forms look better?
 
-MailChimp includes its own CSS in the HTML embed code that, by default, doesn't look quite right with Independent Publisher. To fix the MailChimp CSS, you can add the following to the `style.css` file of a [Child Theme](https://github.com/raamdev/independent-publisher-child-theme/) (or if you're using JetPack, simply go to *Appearance → Edit CSS* and insert the following):
+MailChimp includes its own CSS in the HTML embed code that, by default, doesn't look quite right with Independent Publisher. To fix the MailChimp CSS, you can add the following to the `style.css` file of a [Child Theme](https://github.com/raamdev/independent-publisher-child-theme/) (or if you're using Jetpack, simply go to *Appearance → Edit CSS* and insert the following):
 
 ```
 #mc_signup .button {
@@ -356,7 +348,9 @@ add_filter( 'independent_publisher_full_width_featured_image_size', '__custom_in
 
 ### How can I use a Full Size Image for Featured Images?
 
-By default, the theme will use a 100% width for featured images, which means`700px` wide. You can override this and use whatever the full image size is by adding the following to your Child Theme's `style.css` file:
+The theme uses the default of `700px` for various reasons, including bandwidth considerations. However, you can easily override the default featured image width and show the `full` width (or any of the [WordPress thumbnail sizes](http://codex.wordpress.org/Function_Reference/the_post_thumbnail#Thumbnail_Sizes)).
+
+First, you'll need to update the CSS. By default, the theme CSS will use a 100% width for featured images (which means `700px` wide by default). You can override this and use whatever the full image size is by adding the following to your Child Theme's `style.css` file:
 
 ```php
 .single .wp-post-image,
@@ -366,6 +360,18 @@ By default, the theme will use a 100% width for featured images, which means`700
 	width: auto;
 }
 ```
+
+You'll also need to add the following code to a Child Theme's `functions.php` file (instead of `full`, you can use any of the [WordPress thumbnail sizes](http://codex.wordpress.org/Function_Reference/the_post_thumbnail#Thumbnail_Sizes)):
+
+``` php
+function __custom_independent_publisher_full_width_featured_image_size() {
+    return "full";
+}
+
+add_filter( 'independent_publisher_full_width_featured_image_size', '__custom_independent_publisher_full_width_featured_image_size' );
+```
+
+If you add the above PHP code and discover that your post Featured Images are too big, try removing the CSS that you added above so that images get a 100% width.
 
 ## Color Schemes
 
@@ -433,7 +439,7 @@ WordPress Filters and Actions allow you to modify the theme without actually mod
 - `independent_publisher_min_comments_bottom_comment_button()` - Returns the minimum number of comments that must exist for the bottom 'Write a Comment' button to appear
 - `independent_publisher_min_comments_comment_title()` - Returns the minimum number of comments that must exist for the comments title to appear
 - `independent_publisher_hide_comments()` - Determines if the comments and comment form should be hidden altogether. This differs from disabling the comments by also hiding the "Comments are closed." message and allows for easily overriding this function in a Child Theme.
-- `independent_publisher_footer_credits()` - Echoes the theme footer credits. Overriding this function in a Child Theme also applies the changes to JetPack's Infinite Scroll footer.
+- `independent_publisher_footer_credits()` - Echoes the theme footer credits. Overriding this function in a Child Theme also applies the changes to Jetpack's Infinite Scroll footer.
 
 ### Functions in `functions.php`:
 
